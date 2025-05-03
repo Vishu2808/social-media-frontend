@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post | SocialApp</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../posts/create.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="../index.html">SocialApp</a>
+        </div>
+        <div class="navbar-links">
+            <a href="../index.html"><i class="fas fa-home"></i></a>
+            <a href="#"><i class="fas fa-paper-plane"></i></a>
+            <a href="create.html"><i class="fas fa-plus-square"></i></a>
+            <a href="#"><i class="fas fa-compass"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="../users/profile.html"><i class="fas fa-user"></i></a>
+        </div>
+    </nav>
+
+    <div class="create-post-container">
+        <div class="create-post-card">
+            <div class="create-post-header">
+                <h2><i class="fas fa-plus-circle"></i> Create New Post</h2>
+                <button class="btn-close" onclick="window.history.back()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="create-post-content">
+                <div class="media-upload-section">
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Drag photos and videos here</h3>
+                        <p>or</p>
+                        <button class="btn-select" id="select-files">
+                            <i class="fas fa-folder-open"></i> Select from computer
+                        </button>
+                        <input type="file" id="file-input" accept="image/*,video/*" multiple style="display: none;">
+                    </div>
+                    
+                    <div class="media-preview" id="media-preview">
+                        <!-- Preview will appear here -->
+                        <div class="empty-state">
+                            <i class="fas fa-images"></i>
+                            <p>No media selected yet</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="post-details-section">
+                    <div class="author-info">
+                        <img src="https://picsum.photos/100" alt="Your profile" class="author-avatar">
+                        <span class="author-name">johndoe</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="caption">Caption</label>
+                        <textarea id="caption" placeholder="What's on your mind?" rows="4"></textarea>
+                        <div class="character-count"><span id="char-count">0</span>/2,200</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location"><i class="fas fa-map-marker-alt"></i> Add Location</label>
+                        <input type="text" id="location" placeholder="Where was this taken?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hashtags"><i class="fas fa-hashtag"></i> Add Hashtags</label>
+                        <div class="hashtags-input-container">
+                            <input type="text" id="hashtags" placeholder="Type hashtags and press space">
+                            <div class="hashtags-preview" id="hashtags-preview">
+                                <!-- Added hashtags will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tag-people"><i class="fas fa-user-tag"></i> Tag People</label>
+                        <input type="text" id="tag-people" placeholder="Who's in this post?">
+                    </div>
+                    
+                    <div class="advanced-options">
+                        <div class="option-toggle">
+                            <label>
+                                <input type="checkbox" id="allow-comments">
+                                Allow Comments
+                            </label>
+                        </div>
+                        <div class="option-toggle">
+                            <label>
+                                <input type="checkbox" id="hide-likes">
+                                Hide Like Count
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-post" id="submit-post">
+                        <i class="fas fa-share"></i> Share Post
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        // DOM Elements
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const mediaPreview = document.getElementById('media-preview');
+        const selectFilesBtn = document.getElementById('select-files');
+        const hashtagsInput = document.getElementById('hashtags');
+        const hashtagsPreview = document.getElementById('hashtags-preview');
+        const captionInput = document.getElementById('caption');
+        const charCount = document.getElementById('char-count');
+        
+        // Event Listeners
+        selectFilesBtn.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFiles();
+            }
+        });
+        
+        fileInput.addEventListener('change', handleFiles);
+        
+        hashtagsInput.addEventListener('keyup', (e) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+                const hashtag = e.target.value.trim();
+                if (hashtag.startsWith('#') && hashtag.length > 1) {
+                    addHashtag(hashtag);
+                    e.target.value = '';
+                }
+            }
+        });
+        
+        captionInput.addEventListener('input', () => {
+            charCount.textContent = captionInput.value.length;
+        });
+        
+        // Functions
+        function handleFiles() {
+            const files = fileInput.files;
+            mediaPreview.innerHTML = '';
+            
+            if (files.length > 0) {
+                uploadArea.style.display = 'none';
+                mediaPreview.querySelector('.empty-state').style.display = 'none';
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const mediaItem = document.createElement('div');
+                        mediaItem.className = 'media-item';
+                        
+                        if (file.type.startsWith('image')) {
+                            mediaItem.innerHTML = `
+                                <img src="${e.target.result}" alt="Preview">
+                                <button class="btn-remove-media" onclick="removeMediaItem(this)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                        } else {
+                            mediaItem.innerHTML = `
+                                <video controls>
+                                    <source src="${e.target.result}" type="${file.type}">
+                                </video>
+                                <button class="btn-remove-media" onclick="removeMediaItem(this)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                        }
+                        
+                        mediaPreview.appendChild(mediaItem);
+                    }
+                    
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+        
+        function addHashtag(hashtag) {
+            const hashtagElement = document.createElement('span');
+            hashtagElement.className = 'hashtag-tag';
+            hashtagElement.innerHTML = `
+                ${hashtag}
+                <button onclick="removeHashtag(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            hashtagsPreview.appendChild(hashtagElement);
+        }
+        
+        function removeHashtag(button) {
+            button.parentElement.remove();
+        }
+        
+        function removeMediaItem(button) {
+            button.parentElement.remove();
+            if (mediaPreview.children.length === 1) { // Only empty state remains
+                uploadArea.style.display = 'flex';
+                mediaPreview.querySelector('.empty-state').style.display = 'flex';
+            }
+        }
+        
+        document.getElementById('submit-post').addEventListener('click', () => {
+            // Validate form
+            if (!fileInput.files.length) {
+                alert('Please select at least one photo or video');
+                return;
+            }
+            
+            // Gather form data
+            const formData = new FormData();
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('media[]', fileInput.files[i]);
+            }
+            
+            formData.append('caption', captionInput.value);
+            formData.append('location', document.getElementById('location').value);
+            
+            const hashtags = Array.from(hashtagsPreview.children)
+                .map(tag => tag.textContent.trim())
+                .join(' ');
+            formData.append('hashtags', hashtags);
+            
+            // In a real app, you would send this to your backend
+            console.log('Post data:', Object.fromEntries(formData));
+            
+            // Simulate successful post
+            alert('Your post has been shared successfully!');
+            window.location.href = '../index.html';
+        });
+    </script>
+</body>
+</html>

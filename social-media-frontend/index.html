@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="index.html">SocialApp</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="navbar-links">
+            <a href="index.html"><i class="fas fa-home"></i></a>
+            <a href="#"><i class="fas fa-paper-plane"></i></a>
+            <a href="posts/create.html"><i class="fas fa-plus-square"></i></a>
+            <a href="#"><i class="fas fa-compass"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="users/profile.html"><i class="fas fa-user"></i></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <img src="https://picsum.photos/100" alt="Profile" id="user-profile-pic">
+                <span id="username">Username</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-hashtag"></i> Explore</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="#"><i class="fas fa-bookmark"></i> Bookmarks</a></li>
+                <li><a href="#"><i class="fas fa-list"></i> Lists</a></li>
+                <li><a href="users/profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+            <button class="btn-post" onclick="location.href='posts/create.html'">Create Post</button>
+        </aside>
+
+        <main class="main-content">
+            <div class="post-form">
+                <div class="post-form-header">
+                    <img src="https://picsum.photos/100" alt="User" id="current-user-pic">
+                    <input type="text" placeholder="What's on your mind?" id="post-caption">
+                </div>
+                <div class="post-form-footer">
+                    <div class="post-options">
+                        <button><i class="fas fa-image"></i> Photo</button>
+                        <button><i class="fas fa-video"></i> Video</button>
+                        <button><i class="fas fa-map-marker-alt"></i> Location</button>
+                        <button><i class="fas fa-hashtag"></i> Hashtag</button>
+                    </div>
+                    <button class="btn-post" id="submit-post">Post</button>
+                </div>
+            </div>
+
+            <div class="posts-container" id="posts-container">
+                <!-- Posts will be loaded here dynamically -->
+                <div class="post">
+                    <div class="post-header">
+                        <img src="https://picsum.photos/101" alt="User">
+                        <div class="post-user-info">
+                            <div class="username">janedoe</div>
+                            <div class="location">Malibu, CA</div>
+                        </div>
+                        <div class="post-more"><i class="fas fa-ellipsis-h"></i></div>
+                    </div>
+                    <div class="post-content">
+                        <img src="https://picsum.photos/500" alt="Post image" class="post-image">
+                        <div class="post-caption">Enjoying the beautiful sunset! #sunset #nature</div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">
+                            <div class="post-actions-left">
+                                <i class="far fa-heart"></i>
+                                <i class="far fa-comment"></i>
+                                <i class="far fa-paper-plane"></i>
+                            </div>
+                            <i class="far fa-bookmark"></i>
+                        </div>
+                        <div class="post-likes">124 likes</div>
+                        <div class="post-comments">View all 23 comments</div>
+                        <div class="post-time">2 hours ago</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="trending-hashtags">
+                <h3>Trending Hashtags</h3>
+                <ul id="trending-hashtags">
+                    <li><a href="#">#summer</a> <span>12,500 posts</span></li>
+                    <li><a href="#">#photography</a> <span>9,800 posts</span></li>
+                    <li><a href="#">#travel</a> <span>8,700 posts</span></li>
+                    <li><a href="#">#food</a> <span>7,600 posts</span></li>
+                    <li><a href="#">#fitness</a> <span>6,500 posts</span></li>
+                </ul>
+            </div>
+            <div class="suggested-users">
+                <h3>Suggested Users</h3>
+                <ul id="suggested-users">
+                    <li>
+                        <img src="https://picsum.photos/103" alt="photographer">
+                        <div class="user-info">
+                            <div class="username">photographer</div>
+                            <div class="bio">Professional photographer</div>
+                        </div>
+                        <div class="follow-btn">Follow</div>
+                    </li>
+                    <li>
+                        <img src="https://picsum.photos/104" alt="chef">
+                        <div class="user-info">
+                            <div class="username">chef</div>
+                            <div class="bio">Food lover & chef</div>
+                        </div>
+                        <div class="follow-btn">Follow</div>
+                    </li>
+                    <li>
+                        <img src="https://picsum.photos/105" alt="fitnessguru">
+                        <div class="user-info">
+                            <div class="username">fitnessguru</div>
+                            <div class="bio">Fitness trainer</div>
+                        </div>
+                        <div class="follow-btn">Follow</div>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
